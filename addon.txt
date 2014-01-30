@@ -1,0 +1,11 @@
+"AddonInfo"
+{
+    "name"          "tksu"
+    "version"		"0.1a"
+	"up_date"		"30-01-14"
+	"author_name"	"EliteTK"
+	"author_email"	"theelitetk@hotmail.com"
+	"author_url"	"https://github.com/EliteTK"
+	"info"			"TK Server Utilities"
+	"override"		"0"
+}
