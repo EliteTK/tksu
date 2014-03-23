@@ -57,12 +57,14 @@ hook.Add( "PlayerShouldTakeDamage", "propdamage remover", function( ply, attacke
                 return false
             end
 
-            if ( conditional and blockConditional) then
+            if ( conditional and blockConditional) then -- If conditional and time is right then block conditional. Should really be rewritten entirely.
                 markTime()
                 PMsg("Stopped conditional damage")
                 return false
             end
-            PMsg("Letting conditional damage from "..damage.." pass")
+            if conditional then
+                PMsg("Letting conditional damage from "..damage.." pass")
+            end
         end
     end
 )

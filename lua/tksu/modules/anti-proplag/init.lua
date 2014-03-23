@@ -1,7 +1,7 @@
 if ( SERVER ) then
     Msg("[PLP] Initialising Prop Lag Protection\n")
 
-    local maxPCCPerSecond = 40
+    local maxPCCPerSecond = 50
     local verbose = true
 
     Msg("[PLP] Set to freeze past "..maxPCCPerSecond.." PPCPS\n")
@@ -17,25 +17,36 @@ if ( SERVER ) then
         end
     end
 
-    local entPCC = {}
+    local entlist = {}
 
-    hook.Add( "OnEntityCreated", "Add entity to logger", function( entity )
+    hook.Add( "PlayerSpawnedProp", "Add entity to logger", function( ply, model, entity )
         if entity:GetClass() == "prop_physics" then
             local CID = entity:GetCreationID()
-            entPCC[CID] = 0
+            entlist[CID] = {}
+            entlist[CID].owner = ply
+            entlist[CID].model = model
+            entlist[CID].count = 0
 
             entity:AddCallback("PhysicsCollide", function (colData, collider)
                 if (not entity:IsPlayerHolding()) then
-                    entPCC[CID] = entPCC[CID] + 1
+                    entlist[CID].count = entlist[CID].count + 1
                 end
             end )
 
             timer.Create( "Timer:"..CID, 1, 0, function() 
-                if (entPCC[CID] > maxPCCPerSecond) then
-                    PMsg("Freezing entity "..entity:GetModel().." PCC: "..entPCC[CID].." pos: "..tostring(entity:GetPos()))
+                if (entlist[CID].count > maxPCCPerSecond) then
+                    local owner = entlist[CID].owner
+                    owner = (IsValid(owner) and owner:Nick()) or "unknown"
+                    PMsg("Freezing entity PCC: "..entlist[CID].count.." pos: "..tostring(entity:GetPos()).." owned by: "..owner)
+                    for _, v in pairs(player.GetHumans()) do
+                        if v:IsAdmin() and IsValid(v) then
+                            DarkRP.notify(v, 0, 4, "[PLP] "..owner.." might be prop-spamming.")
+                        end
+                    end
+
                     entity:GetPhysicsObject():EnableMotion(false)
                 end
-                entPCC[CID] = 0
+                entlist[CID].count = 0
             end )
 
             PMsg("Added "..CID.." to PLP list")
@@ -45,7 +56,7 @@ if ( SERVER ) then
     hook.Add( "EntityRemoved", "Remove entity from logger", function( entity )
         if entity:GetClass() == "prop_physics" then
             local CID = entity:GetCreationID()
-            entPCC[CID] = nil
+            entlist[CID] = nil
             timer.Remove( "Timer:"..CID )
             PMsg("Removed "..CID.." from PLP list")
         end
