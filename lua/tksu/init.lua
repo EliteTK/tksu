@@ -1,4 +1,4 @@
-Msg(" ==== Initialising TK Server Utilities ==== \n")
+Msg("\n ==== Initialising TK Server Utilities ==== \n")
 AddCSLuaFile("tksu/cl_init.lua")
 AddCSLuaFile("autorun/start.lua")
 local filenames  = {"init.lua", "shared.lua", "cl_init.lua"}
@@ -25,4 +25,4 @@ for _, folder in pairs(modules) do
     end
 end
 
-Msg("TKSU initialisation successful.\n")
+Msg(" ==== TKSU initialisation successful ==== \n\n")

@@ -6,6 +6,9 @@ local blockedDamage = {
     "gmod_button",
     "wire_textscreen",
     "prop_physics",
+    "sent",
+    "printer",
+    "Printer"
 }
 
 local conditionalDamage = {
@@ -22,7 +25,7 @@ end
 
 local function damageIsBlocked( damage, attacker )
     for _, v in pairs(blockedDamage) do
-        if attacker:GetClass() == v then
+        if string.find(attacker:GetClass(), v) ~= nil then
             return true
         end
     end

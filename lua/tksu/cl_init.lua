@@ -1,4 +1,4 @@
-Msg(" ==== Initialising TK Server Utilities Clientside ==== \n")
+Msg("\n ==== Initialising TK Server Utilities Clientside ==== \n")
 local filenames  = {"shared.lua", "cl_init.lua"}
 
 local _, modules = file.Find( "tksu/modules/*", "LUA" )
@@ -14,4 +14,4 @@ for _, folder in pairs(modules) do
     end
 end
 
-Msg("TKSU clientside initialisation successful.\n")
+Msg(" ==== TKSU clientside initialisation successful. ==== \n\n")
