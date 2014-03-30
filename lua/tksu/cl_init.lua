@@ -9,7 +9,7 @@ for _, folder in pairs(modules) do
         local path = "tksu/modules/"..folder.."/"..filename
         if file.Exists( path, "LUA" ) then
             Msg( "[TKSU] Including file: "..folder.."/cl_init.lua\n" )
-            AddCSLuaFile( path, "LUA" )
+            include( path, "LUA" )
         end
     end
 end
