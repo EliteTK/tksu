@@ -46,7 +46,7 @@ if ( SERVER ) then
     end
 
     local function unghostFreeze(entity, CID)
-        if(not entlist[CID].ghosted) then return end
+        if(not entlist[CID] or not entlist[CID].ghosted) then return end
         entlist[CID].ghosted = nil
 
         entity:DrawShadow(true)
@@ -103,7 +103,7 @@ if ( SERVER ) then
     end )
 
     hook.Add( "EntityRemoved", "Remove entity from logger", function( entity )
-        if entity:GetClass() == "prop_physics" and entlist[CID] then
+        if entity:GetClass() == "prop_physics" and entlist[CID] ~= nil then
             local CID = entity:GetCreationID()
             entlist[CID] = nil
             timer.Remove( "Timer:"..CID )
