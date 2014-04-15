@@ -83,13 +83,6 @@ if ( SERVER ) then
                         owner = (IsValid(owner) and owner:Nick()) or "unknown"
                         PMsg("Ghosting entity PCC: "..entlist[CID].count.." pos: "..tostring(entity:GetPos()).." owned by: "..owner)
                         libnotify.notify_cond(0, 4, true, "[PLP] "..owner.." might be prop-spamming.", notifyTest)
-                        --for _, user in pairs(player.GetHumans()) do
-                            --local usergroup = user:GetUserGroup()
-                            --if((usergroup == "superadmin" or usergroup == "admin" or usergroup == "moderator") and IsValid(v))then
-                                --DarkRP.notify(user, 0, 4, "[PLP] "..owner.." might be prop-spamming.")
-                            --end
-                        --end
-
                         ghostFreeze(entity, CID)
                     end
                 else
@@ -103,8 +96,8 @@ if ( SERVER ) then
     end )
 
     hook.Add( "EntityRemoved", "Remove entity from logger", function( entity )
-        if entity:GetClass() == "prop_physics" and entlist[CID] ~= nil then
-            local CID = entity:GetCreationID()
+        local CID = entity:GetCreationID()
+        if entlist[CID] ~= nil then
             entlist[CID] = nil
             timer.Remove( "Timer:"..CID )
             PMsg("Removed "..CID.." from PLP list")
